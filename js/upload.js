@@ -5,9 +5,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const titleInput = document.getElementById('title');
   const descriptionInput = document.getElementById('description');
   const categoryIdInput = document.getElementById('category-id');
+  const locationInput = document.getElementById('location'); // Get location input
   const languageInput = document.getElementById('language');
   const releaseRightsInput = document.getElementById('release-rights');
   const statusDiv = document.getElementById('status');
+
+  // Auto-detect location
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      // You might want to use a reverse geocoding service here to get a human-readable address
+      // For now, we'll just put the coordinates
+      locationInput.value = `${lat}, ${lon}`;
+    }, (error) => {
+      console.error('Error getting geolocation:', error);
+      statusDiv.className = 'mt-3 text-center text-warning';
+      statusDiv.innerText = 'Could not auto-detect location. Please enter it manually.';
+    });
+  } else {
+    statusDiv.className = 'mt-3 text-center text-warning';
+    statusDiv.innerText = 'Geolocation is not supported by your browser. Please enter location manually.';
+  }
 
   const authToken = localStorage.getItem('authToken');
   if (!authToken) {
@@ -78,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const videoFile = videoFileInput.files[0];
     const title = titleInput.value.trim();
     const description = descriptionInput.value.trim();
+    const location = locationInput.value.trim();
     const categoryId = categoryIdInput.value;
     const language = languageInput.value;
     const releaseRights = releaseRightsInput.value;
@@ -88,9 +108,9 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    if (!title || !categoryId || !language || !releaseRights) {
+    if (!title || !categoryId || !language || !releaseRights || !location) {
       statusDiv.className = 'mt-3 text-center text-warning';
-      statusDiv.innerText = 'Please fill in all required metadata fields (Title, Category, Language, Release Rights).';
+      statusDiv.innerText = 'Please fill in all required metadata fields (Title, Category, Language, Release Rights, Location).';
       return;
     }
 
@@ -132,6 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
       finalizeFormData.append('filename', fileToUpload.name);
       finalizeFormData.append('total_chunks', Math.ceil(fileToUpload.size / CHUNK_SIZE));
       finalizeFormData.append('release_rights', releaseRights);
+      finalizeFormData.append('location', location);
       finalizeFormData.append('language', language);
       finalizeFormData.append('use_uid_filename', 'false'); // Default to false
 
