@@ -7,14 +7,14 @@ document.addEventListener('DOMContentLoaded', () => {
   let userId = localStorage.getItem('userId'); // Keep userId for content fetching
 
   if (!authToken) {
-    window.location.href = 'login.html';
+    window.location.href = 'pages/login.html';
     return;
   }
 
   logoutBtn.addEventListener('click', () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('userId');
-    window.location.href = 'login.html';
+    window.location.href = 'pages/login.html';
   });
 
   // Function to fetch user details and store userId
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Redirect to login if user details cannot be fetched
       localStorage.removeItem('authToken');
       localStorage.removeItem('userId');
-      window.location.href = 'login.html';
+      window.location.href = 'pages/login.html';
     }
   }
 
