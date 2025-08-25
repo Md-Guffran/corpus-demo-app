@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('Registration API Response:', result);
       statusDiv.className = 'mt-3 text-center text-success';
       statusDiv.innerText = 'Registration successful! Redirecting to login...';
-      window.location.href = 'login.html';
+      window.location.href = 'pages/login.html';
     } catch (err) {
       statusDiv.className = 'mt-3 text-center text-danger';
       statusDiv.innerText = 'Error during registration: ' + err.message;
