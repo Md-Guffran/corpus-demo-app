@@ -1,4 +1,4 @@
-# Guffran Demo App
+# Corpus Demo App
 
 This is a demo web application that provides user authentication (signup, login), a dashboard to view user contributions, and a file upload functionality. It interacts with the `https://api.corpus.swecha.org` API for backend operations.
 
