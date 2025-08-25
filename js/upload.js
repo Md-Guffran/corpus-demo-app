@@ -9,22 +9,31 @@ document.addEventListener('DOMContentLoaded', () => {
   const languageInput = document.getElementById('language');
   const releaseRightsInput = document.getElementById('release-rights');
   const statusDiv = document.getElementById('status');
+  const getLocationBtn = document.getElementById('get-location-btn'); // Get the new button
 
-  // Auto-detect location
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition((position) => {
-      const lat = position.coords.latitude;
-      const lon = position.coords.longitude;
-      // For now, we'll just put the coordinates without a space after the comma
-      locationInput.value = `${lat},${lon}`;
-    }, (error) => {
-      console.error('Error getting geolocation:', error);
+  // Function to get geolocation
+  function getGeolocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        locationInput.value = `${lat},${lon}`;
+        statusDiv.className = 'mt-3 text-center text-success';
+        statusDiv.innerText = 'Location auto-detected!';
+      }, (error) => {
+        console.error('Error getting geolocation:', error);
+        statusDiv.className = 'mt-3 text-center text-warning';
+        statusDiv.innerText = 'Could not auto-detect location. Please enter it manually.';
+      });
+    } else {
       statusDiv.className = 'mt-3 text-center text-warning';
-      statusDiv.innerText = 'Could not auto-detect location. Please enter it manually.';
-    });
-  } else {
-    statusDiv.className = 'mt-3 text-center text-warning';
-    statusDiv.innerText = 'Geolocation is not supported by your browser. Please enter location manually.';
+      statusDiv.innerText = 'Geolocation is not supported by your browser. Please enter location manually.';
+    }
+  }
+
+  // Add event listener to the new button
+  if (getLocationBtn) {
+    getLocationBtn.addEventListener('click', getGeolocation);
   }
 
   const authToken = localStorage.getItem('authToken');
