@@ -15,9 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
     navigator.geolocation.getCurrentPosition((position) => {
       const lat = position.coords.latitude;
       const lon = position.coords.longitude;
-      // You might want to use a reverse geocoding service here to get a human-readable address
-      // For now, we'll just put the coordinates
-      locationInput.value = `${lat}, ${lon}`;
+      // For now, we'll just put the coordinates without a space after the comma
+      locationInput.value = `${lat},${lon}`;
     }, (error) => {
       console.error('Error getting geolocation:', error);
       statusDiv.className = 'mt-3 text-center text-warning';
@@ -33,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     statusDiv.className = 'mt-3 text-center text-danger';
     statusDiv.innerText = 'You are not logged in. Redirecting to login page...';
     setTimeout(() => {
-      window.location.href = 'login.html';
+      window.location.href = 'pages/login.html';
     }, 2000);
     return;
   }
@@ -134,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('User ID retrieved from localStorage in upload.js:', userId);
       if (!userId) {
         // If userId is not in localStorage, redirect to dashboard to fetch it
-        window.location.href = 'dashboard.html';
+        window.location.href = 'pages/dashboard.html';
         return;
       }
 
@@ -156,6 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
       finalizeFormData.append('language', language);
       finalizeFormData.append('use_uid_filename', 'false'); // Default to false
 
+      console.log('Location being sent:', location); // Debugging line for location
       console.log('Finalize Request Body:', finalizeFormData.toString()); // Debugging line
 
       const finalizeResp = await fetch('https://api.corpus.swecha.org/api/v1/records/upload', {
