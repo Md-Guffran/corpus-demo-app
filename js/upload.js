@@ -36,6 +36,23 @@ document.addEventListener('DOMContentLoaded', () => {
     getLocationBtn.addEventListener('click', getGeolocation);
   }
 
+  // Auto-detect location
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      // For now, we'll just put the coordinates without a space after the comma
+      locationInput.value = `${lat},${lon}`;
+    }, (error) => {
+      console.error('Error getting geolocation:', error);
+      statusDiv.className = 'mt-3 text-center text-warning';
+      statusDiv.innerText = 'Could not auto-detect location. Please enter it manually.';
+    });
+  } else {
+    statusDiv.className = 'mt-3 text-center text-warning';
+    statusDiv.innerText = 'Geolocation is not supported by your browser. Please enter location manually.';
+  }
+
   const authToken = localStorage.getItem('authToken');
   if (!authToken) {
     statusDiv.className = 'mt-3 text-center text-danger';
