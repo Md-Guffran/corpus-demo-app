@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('Auth Token stored:', authToken);
       statusDiv.className = 'mt-3 text-center text-success';
       statusDiv.innerText = 'Logged in successfully! Redirecting to dashboard...';
-      window.location.href = 'pages/dashboard.html'; // Redirect to dashboard page
+      window.location.href = '/pages/dashboard.html'; // Redirect to dashboard page using absolute path
     } catch (err) {
       statusDiv.className = 'mt-3 text-center text-danger';
       statusDiv.innerText = 'Error during sign in: ' + err.message;
